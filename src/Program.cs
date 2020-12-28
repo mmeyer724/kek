@@ -6,7 +6,12 @@ namespace kek
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var client = new CecClient();
+            if (client.Connect(10000))
+            {
+                client.SetActiveSource();
+                client.Close();
+            }
         }
     }
 }
