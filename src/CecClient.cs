@@ -5,25 +5,25 @@ namespace kek
 {
     class CecClient : CecCallbackMethods
     {
-        private int LogLevel;
-        private LibCecSharp Lib;
-        private LibCECConfiguration Config;
+        private int logLevel;
+        private LibCecSharp lib;
+        private LibCECConfiguration config;
 
         public CecClient()
         {
-            Config = new LibCECConfiguration();
-            Config.DeviceTypes.Types[0] = CecDeviceType.PlaybackDevice;
-            Config.DeviceName = "kek";
-            Config.ClientVersion = LibCECConfiguration.CurrentVersion;
-            Config.HDMIPort = 2; // TODO: make this configurable
-            LogLevel = (int)CecLogLevel.All;
+            config = new LibCECConfiguration();
+            config.DeviceTypes.Types[0] = CecDeviceType.PlaybackDevice;
+            config.DeviceName = "kek";
+            config.ClientVersion = LibCECConfiguration.CurrentVersion;
+            config.HDMIPort = 2; // TODO: make this configurable
+            logLevel = (int)CecLogLevel.All;
 
-            Lib = new LibCecSharp(this, Config);
+            lib = new LibCecSharp(this, config);
         }
 
         public override int ReceiveLogMessage(CecLogMessage message)
         {
-            if (((int)message.Level & LogLevel) == (int)message.Level)
+            if (((int)message.Level & logLevel) == (int)message.Level)
             {
                 string strLevel = "";
                 switch (message.Level)
@@ -54,7 +54,7 @@ namespace kek
 
         public bool Connect(int timeout)
         {
-            CecAdapter[] adapters = Lib.FindAdapters(string.Empty);
+            CecAdapter[] adapters = lib.FindAdapters(string.Empty);
             if (adapters.Length > 0)
             {
                 return Connect(adapters[0].ComPort, timeout);
@@ -68,17 +68,17 @@ namespace kek
 
         public bool Connect(string port, int timeout)
         {
-            return Lib.Open(port, timeout);
+            return lib.Open(port, timeout);
         }
 
         public void Close()
         {
-            Lib.Close();
+            lib.Close();
         }
 
         public void SetActiveSource()
         {
-            Lib.SetActiveSource(CecDeviceType.PlaybackDevice);
+            lib.SetActiveSource(CecDeviceType.PlaybackDevice);
         }
     }
 }
