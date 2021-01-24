@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Threading;
 
 namespace kek
 {
@@ -10,6 +10,7 @@ namespace kek
             if (client.Connect(10000))
             {
                 client.SetActiveSource();
+                Thread.Sleep(5000);
                 client.Close();
             }
         }
